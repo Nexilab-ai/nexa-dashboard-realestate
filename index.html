@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
@@ -18,17 +18,25 @@
     }
     button {
       padding: 10px 20px;
-      font-size: 16px;
+      font-size: 14px;
       background-color: #28a745;
       color: white;
       border: none;
-      margin-top: 10px;
+      margin: 5px;
       cursor: pointer;
+      border-radius: 6px;
     }
     #response {
       margin-top: 20px;
       font-size: 18px;
       color: #333;
+    }
+    .button-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 30px;
+      gap: 10px;
     }
   </style>
 </head>
@@ -37,7 +45,24 @@
   <input type="text" placeholder="Che vuoi chiedere a Nexa?" />
   <br />
   <button onclick="sendCommand()">Invia</button>
+
   <div id="response">🤖 Nexa risponde:</div>
+
+  <div class="button-grid">
+    <button>Posta su Instagram</button>
+    <button>Posta su X</button>
+    <button>Posta Short YouTube</button>
+    <button>Posta su LinkedIn</button>
+    <button>Posta su Pinterest</button>
+    <button>Posta su tutti i canali</button>
+    <button>Genera testo promozionale</button>
+    <button>Genera teaser immagine</button>
+    <button>Crea nuovo prodotto</button>
+    <button>Controlla vendite</button>
+    <button>Mostra statistiche</button>
+    <button>Salva su Notion</button>
+    <button>Esporta PDF</button>
+  </div>
 
   <script>
     async function sendCommand() {
