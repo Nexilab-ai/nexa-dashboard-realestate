@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -7,91 +7,59 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f7f7f7;
+      background: #f5f5f5;
       text-align: center;
-      padding: 20px;
+      padding: 40px;
     }
-    h1 { color: #2c3e50; }
-    input[type="text"] {
+    input {
       padding: 10px;
       width: 300px;
-      margin-bottom: 10px;
+      font-size: 16px;
     }
     button {
-      padding: 10px 15px;
-      margin: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
       background-color: #28a745;
       color: white;
       border: none;
+      margin-top: 10px;
       cursor: pointer;
-      border-radius: 4px;
     }
-    button:hover {
-      background-color: #218838;
-    }
-    #responseBox {
+    #response {
       margin-top: 20px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      background-color: #f8f8f8;
-      font-family: sans-serif;
-      font-size: 16px;
-      min-height: 50px;
+      font-size: 18px;
+      color: #333;
     }
   </style>
 </head>
 <body>
   <h1>Nexa Dashboard</h1>
-
-  <!-- Campo di input -->
-  <input type="text" id="commandInput" placeholder="Scrivi un comando personalizzato..." />
-
-  <!-- Barra di risposta -->
-  <div id="responseBox">
-    🤖 <strong>Nexa risponde:</strong>
-    <p id="nexaResponse">(Qui apparirà la risposta di Nexa)</p>
-  </div>
-
-  <!-- Tasto invia -->
+  <input type="text" placeholder="Che vuoi chiedere a Nexa?" />
+  <br />
   <button onclick="sendCommand()">Invia</button>
+  <div id="response">🤖 Nexa risponde:</div>
 
-  <!-- Bottoni rapidi -->
-  <div id="buttons">
-    <button onclick="handleCommand('instagram')">Post to Instagram</button>
-    <button onclick="handleCommand('x')">Post to X</button>
-    <button onclick="handleCommand('short')">Post Short YouTube</button>
-    <button onclick="handleCommand('linkedin')">Post to LinkedIn</button>
-    <button onclick="handleCommand('pinterest')">Post to Pinterest</button>
-    <button onclick="handleCommand('all')">Post to All Channels</button>
-    <button onclick="handleCommand('promo')">Generate Promotional Text</button>
-    <button onclick="handleCommand('image')">Generate Image Teaser</button>
-    <button onclick="handleCommand('create')">Create New Product</button>
-    <button onclick="handleCommand('check')">Check Sales</button>
-    <button onclick="handleCommand('stats')">Show Stats</button>
-    <button onclick="handleCommand('notion')">Save to Notion</button>
-    <button onclick="handleCommand('pdf')">Export PDF</button>
-  </div>
-
-  <!-- Script: comandi e risposta -->
   <script>
-    function handleCommand(cmd) {
-      const response = "Comando eseguito con successo: " + cmd;
-      document.getElementById("nexaResponse").innerText = response;
-    }
+    async function sendCommand() {
+      const input = document.querySelector("input").value;
+      const responseDiv = document.getElementById("response");
+      responseDiv.innerText = "⌛ Nexa sta elaborando...";
 
-    function sendCommand() {
-      const input = document.getElementById("commandInput").value;
-      if (input.trim()) {
-        document.getElementById("nexaResponse").innerText = "⏳ Nexa sta elaborando...";
-        fetchResponse(input);
-        document.getElementById("commandInput").value = "";
+      try {
+        const res = await fetch("/.netlify/functions/ask", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ prompt: input }),
+        });
+
+        const data = await res.json();
+        responseDiv.innerText = data.reply || "❌ Nessuna risposta valida.";
+      } catch (err) {
+        responseDiv.innerText = "❌ Errore: " + err.message;
       }
     }
   </script>
-
-  <!-- Script esterni -->
-  <script src="fetch.js"></script>
-  <script src="netlify/functions/ask.js"></script>
 </body>
 </html>
