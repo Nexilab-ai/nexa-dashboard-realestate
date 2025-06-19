@@ -1,31 +1,28 @@
-const fetch = require('node-fetch');
+import fetch from 'node-fetch';
 
-exports.handler = async (event) => {
+export default async (req, res) => {
   try {
-    const { prompt } = JSON.parse(event.body);
+    const { prompt } = JSON.parse(req.body);
+
     const apiKey = process.env.NEXA_API_KEY;
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: 'gpt-3.5-turbo',
-        messages: [{ role: 'user', content: prompt }],
-      }),
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: prompt }]
+      })
     });
 
     const data = await response.json();
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ reply: data.choices[0].message.content }),
-    };
+    const reply = data.choices?.[0]?.message?.content || "Nessuna risposta";
+
+    res.status(200).json({ reply });
   } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: 'Errore interno: ' + error.message }),
-    };
+    res.status(500).json({ error: "Errore lato server: " + error.message });
   }
 };
