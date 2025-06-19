@@ -33,13 +33,20 @@
 </head>
 <body>
   <h1>Nexa Dashboard</h1>
+
+  <!-- CAMPO DI INPUT -->
   <input type="text" id="commandInput" placeholder="Scrivi un comando personalizzato..." />
+
   <!-- BARRA DI RISPOSTA DI NEXA -->
-<div id="responseBox" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; background-color: #f8f8f8; font-family: sans-serif; font-size: 16px; min-height: 50px;">
-  🤖 <strong>Nexa risponde:</strong>
-  <p id="nexaResponse" style="margin-top: 8px;">(Qui apparirà la risposta di Nexa)</p>
-</div>
+  <div id="responseBox" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; background-color: #f8f8f8; font-family: sans-serif; font-size: 16px; min-height: 50px;">
+    🤖 <strong>Nexa risponde:</strong>
+    <p id="nexaResponse" style="margin-top: 8px;">(Qui apparirà la risposta di Nexa)</p>
+  </div>
+
+  <!-- TASTO INVIA -->
   <button onclick="sendCommand()">Invia</button>
+
+  <!-- COMANDI RAPIDI -->
   <div id="buttons">
     <button onclick="handleCommand('instagram')">Post to Instagram</button>
     <button onclick="handleCommand('x')">Post to X</button>
@@ -56,27 +63,21 @@
     <button onclick="handleCommand('pdf')">Export PDF</button>
   </div>
 
+  <!-- SCRIPT -->
   <script>
     function handleCommand(cmd) {
-      alert("Nexa says: Comando eseguito con successo: " + cmd);
+      const response = "Comando eseguito con successo: " + cmd;
+      document.getElementById("nexaResponse").innerText = response;
     }
+
     function sendCommand() {
       const input = document.getElementById("commandInput").value;
       if (input.trim()) {
-        alert("Nexa says: Comando eseguito con successo: " + input);
+        const response = "Hai scritto: " + input + ". Nexa sta elaborando...";
+        document.getElementById("nexaResponse").innerText = response;
+        document.getElementById("commandInput").value = "";
       }
     }
   </script>
-  <script>
-  function handleCommand() {
-    const input = document.getElementById('userInput').value;
-
-    const simulatedReply = "Hai scritto: " + input + ". Nexa sta elaborando...";
-
-    document.getElementById('nexaResponse').innerText = simulatedReply;
-
-    document.getElementById('userInput').value = "";
-  }
-</script>
 </body>
 </html>
