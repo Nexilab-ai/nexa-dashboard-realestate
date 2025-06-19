@@ -1,1 +1,66 @@
-<!DOCTYPE html><html><head><title>Nexa Dashboard</title></head><body><h1>Dashboard attiva</h1></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nexa Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 { color: #2c3e50; }
+    input[type="text"] {
+      padding: 10px;
+      width: 300px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 15px;
+      margin: 5px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <h1>Nexa Dashboard</h1>
+  <input type="text" id="commandInput" placeholder="Scrivi un comando personalizzato..." />
+  <button onclick="sendCommand()">Invia</button>
+  <div id="buttons">
+    <button onclick="handleCommand('instagram')">Post to Instagram</button>
+    <button onclick="handleCommand('x')">Post to X</button>
+    <button onclick="handleCommand('short')">Post Short YouTube</button>
+    <button onclick="handleCommand('linkedin')">Post to LinkedIn</button>
+    <button onclick="handleCommand('pinterest')">Post to Pinterest</button>
+    <button onclick="handleCommand('all')">Post to All Channels</button>
+    <button onclick="handleCommand('promo')">Generate Promotional Text</button>
+    <button onclick="handleCommand('image')">Generate Image Teaser</button>
+    <button onclick="handleCommand('create')">Create New Product</button>
+    <button onclick="handleCommand('check')">Check Sales</button>
+    <button onclick="handleCommand('stats')">Show Stats</button>
+    <button onclick="handleCommand('notion')">Save to Notion</button>
+    <button onclick="handleCommand('pdf')">Export PDF</button>
+  </div>
+
+  <script>
+    function handleCommand(cmd) {
+      alert("Nexa says: Comando eseguito con successo: " + cmd);
+    }
+    function sendCommand() {
+      const input = document.getElementById("commandInput").value;
+      if (input.trim()) {
+        alert("Nexa says: Comando eseguito con successo: " + input);
+      }
+    }
+  </script>
+</body>
+</html>
