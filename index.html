@@ -67,5 +67,16 @@
       }
     }
   </script>
+  <script>
+  function handleCommand() {
+    const input = document.getElementById('userInput').value;
+
+    const simulatedReply = "Hai scritto: " + input + ". Nexa sta elaborando...";
+
+    document.getElementById('nexaResponse').innerText = simulatedReply;
+
+    document.getElementById('userInput').value = "";
+  }
+</script>
 </body>
 </html>
