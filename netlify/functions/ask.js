@@ -1,28 +1,52 @@
-import fetch from 'node-fetch';
+const fetch = require('node-fetch');
 
-export default async (req, res) => {
+exports.handler = async (event) => {
   try {
-    const { prompt } = JSON.parse(req.body);
+    const { prompt } = JSON.parse(event.body);
 
-    const apiKey = process.env.NEXA_API_KEY;
+    if (!prompt) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: 'Missing prompt in request body' }),
+      };
+    }
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
       headers: {
-        "Authorization": `Bearer ${apiKey}`,
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.NEXA_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: prompt }]
-      })
+        model: 'gpt-4',
+        messages: [
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+        temperature: 0.7,
+      }),
     });
 
     const data = await response.json();
-    const reply = data.choices?.[0]?.message?.content || "Nessuna risposta";
 
-    res.status(200).json({ reply });
+    if (!data.choices || !data.choices[0]?.message?.content) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: 'No valid response from OpenAI' }),
+      };
+    }
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ reply: data.choices[0].message.content }),
+    };
   } catch (error) {
-    res.status(500).json({ error: "Errore lato server: " + error.message });
+    console.error('Serverless function error:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Internal server error' }),
+    };
   }
 };
