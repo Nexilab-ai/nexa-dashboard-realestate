@@ -1,4 +1,10 @@
 {
   "name": "nexa-dashboard",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "description": "AI dashboard",
+  "main": "index.js",
+  "type": "commonjs",
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  }
 }
