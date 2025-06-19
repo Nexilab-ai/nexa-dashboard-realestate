@@ -34,6 +34,11 @@
 <body>
   <h1>Nexa Dashboard</h1>
   <input type="text" id="commandInput" placeholder="Scrivi un comando personalizzato..." />
+  <!-- BARRA DI RISPOSTA DI NEXA -->
+<div id="responseBox" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; background-color: #f8f8f8; font-family: sans-serif; font-size: 16px; min-height: 50px;">
+  🤖 <strong>Nexa risponde:</strong>
+  <p id="nexaResponse" style="margin-top: 8px;">(Qui apparirà la risposta di Nexa)</p>
+</div>
   <button onclick="sendCommand()">Invia</button>
   <div id="buttons">
     <button onclick="handleCommand('instagram')">Post to Instagram</button>
