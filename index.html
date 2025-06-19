@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
@@ -55,7 +55,7 @@
     <button>Posta su LinkedIn</button>
     <button>Posta su Pinterest</button>
     <button>Posta su tutti i canali</button>
-    <button>Genera testo promozionale</button>
+    <button onclick="generatePromoText()">Genera testo promozionale</button>
     <button>Genera teaser immagine</button>
     <button>Crea nuovo prodotto</button>
     <button>Controlla vendite</button>
@@ -79,6 +79,24 @@
           body: JSON.stringify({ prompt: input }),
         });
 
+        const data = await res.json();
+        responseDiv.innerText = data.reply || "❌ Nessuna risposta valida.";
+      } catch (err) {
+        responseDiv.innerText = "❌ Errore: " + err.message;
+      }
+    }
+
+    async function generatePromoText() {
+      const prompt = "Crea un testo promozionale breve ed efficace per un prodotto digitale che migliora la produttività personale.";
+      const responseDiv = document.getElementById("response");
+      responseDiv.innerText = "⌛ Generazione in corso...";
+
+      try {
+        const res = await fetch("/.netlify/functions/ask", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt })
+        });
         const data = await res.json();
         responseDiv.innerText = data.reply || "❌ Nessuna risposta valida.";
       } catch (err) {
