@@ -2,23 +2,15 @@ const fetch = require("node-fetch");
 
 exports.handler = async (event) => {
   try {
-    // ✅ Gestisci eventuali richieste senza body
-    if (!event.body) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: "No request body provided." }),
-      };
-    }
-
     const body = JSON.parse(event.body);
     const propertyData = body.message || "No property details provided.";
 
     const prompt = `
-Write a professional real estate listing in ENGLISH and ITALIAN.
+Write a professional real estate property listing in ENGLISH and ITALIAN.
 
 Include:
 - Title
-- Description
+- Detailed description
 - Main features
 - Call to action
 
@@ -45,14 +37,8 @@ ITALIAN:
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
         messages: [
-          {
-            role: "system",
-            content: "You are a professional real estate copywriter."
-          },
-          {
-            role: "user",
-            content: prompt
-          }
+          { role: "system", content: "You are a professional real estate copywriter." },
+          { role: "user", content: prompt }
         ],
         temperature: 0.6,
         max_tokens: 700
@@ -60,15 +46,6 @@ ITALIAN:
     });
 
     const data = await response.json();
-
-    // ✅ Se la risposta non contiene choices
-    if (!data.choices || !data.choices[0]) {
-      console.error("OpenAI API error response:", data);
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: "No valid response from OpenAI API." }),
-      };
-    }
 
     const aiMessage = data.choices[0].message.content;
 
