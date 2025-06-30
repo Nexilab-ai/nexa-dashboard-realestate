@@ -71,7 +71,7 @@
       responseDiv.innerText = "⌛ Nexa sta elaborando...";
 
       try {
-        const res = await fetch("/.netlify/functions/ask", {
+        const res = await fetch("/.netlify/functions/generateListing", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
