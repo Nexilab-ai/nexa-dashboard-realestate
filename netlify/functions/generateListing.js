@@ -63,7 +63,7 @@ ITALIAN:
     console.error("Error:", error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Something went wrong." }),
+      body: JSON.stringify({ error: error.message }),
     };
   }
 };
