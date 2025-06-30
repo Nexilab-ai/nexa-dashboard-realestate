@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Nexa Dashboard</title>
+  <title>Nexa Dashboard - Real Estate</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -30,6 +30,11 @@
       margin-top: 20px;
       font-size: 18px;
       color: #333;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+      white-space: pre-wrap;
     }
     .button-grid {
       display: flex;
@@ -42,43 +47,33 @@
 </head>
 <body>
   <h1>Nexa Dashboard</h1>
-  <input type="text" placeholder="Scrivi una richiesta personalizzata..." />
+  <input type="text" placeholder="Scrivi una richiesta personalizzata..." id="customInput" />
   <br />
-  <button onclick="sendCommand()">Invia</button>
+  <button onclick="sendCustomRequest()">Invia</button>
 
   <div id="response">🤖 Nexa risponde:</div>
 
   <div class="button-grid">
-    <button>Posta su Instagram</button>
-    <button>Posta su X</button>
-    <button>Posta Short YouTube</button>
-    <button>Posta su LinkedIn</button>
-    <button>Posta su Pinterest</button>
-    <button>Posta su tutti i canali</button>
-    <button onclick="generatePromoText()">Genera testo promozionale</button>
-    <button>Genera teaser immagine</button>
-    <button>Crea nuovo prodotto</button>
-    <button>Controlla vendite</button>
-    <button>Mostra statistiche</button>
-    <button>Salva su Notion</button>
-    <button>Esporta PDF</button>
+    <button onclick="generate('generateListing')">Genera Annuncio Immobiliare</button>
+    <button onclick="generate('generateEmotionalDescription')">Genera Descrizione Emotiva</button>
+    <button onclick="generate('generateEmail')">Genera Email Lead</button>
+    <button onclick="generate('generateSocialPlan')">Genera Piano Social</button>
+    <button onclick="generate('generateBrochure')">Genera Brochure PDF</button>
+    <button onclick="generate('generatePresentation')">Genera Presentazione</button>
   </div>
 
   <script>
-    async function sendCommand() {
-      const input = document.getElementById("userInput").value;
+    async function sendCustomRequest() {
+      const input = document.getElementById("customInput").value;
       const responseDiv = document.getElementById("response");
-      responseDiv.innerText = "⌛ Nexa sta elaborando...";
+      responseDiv.innerText = "⌛ Nexa sta elaborando la tua richiesta...";
 
       try {
-        const res = await fetch("/.netlify/functions/generateListing", {
+        const res = await fetch("/.netlify/functions/ask", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ message: input }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: input })
         });
-
         const data = await res.json();
         responseDiv.innerText = data.reply || "❌ Nessuna risposta valida.";
       } catch (err) {
@@ -86,16 +81,13 @@
       }
     }
 
-    async function generatePromoText() {
-      const prompt = "Crea un testo promozionale breve ed efficace per un prodotto digitale che migliora la produttività personale.";
+    async function generate(endpoint) {
       const responseDiv = document.getElementById("response");
-      responseDiv.innerText = "⌛ Generazione in corso...";
+      responseDiv.innerText = "⌛ Nexa sta generando...";
 
       try {
-        const res = await fetch("/.netlify/functions/ask", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt }),
+        const res = await fetch(`/.netlify/functions/${endpoint}`, {
+          method: "POST"
         });
         const data = await res.json();
         responseDiv.innerText = data.reply || "❌ Nessuna risposta valida.";
