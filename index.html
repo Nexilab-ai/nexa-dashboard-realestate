@@ -42,7 +42,7 @@
 </head>
 <body>
   <h1>Nexa Dashboard</h1>
-  <input type="text" placeholder="Che vuoi chiedere a Nexa?" />
+  <input type="text" id="userInput" placeholder="Che vuoi chiedere a Nexa?" />
   <br />
   <button onclick="sendCommand()">Invia</button>
 
@@ -66,7 +66,7 @@
 
   <script>
     async function sendCommand() {
-      const input = document.querySelector("input").value;
+      const input = document.getElementById("userInput").value;
       const responseDiv = document.getElementById("response");
       responseDiv.innerText = "⌛ Nexa sta elaborando...";
 
@@ -79,21 +79,8 @@
           body: JSON.stringify({ message: input }),
         });
 
-        const text = await res.text();
-
-        let data;
-        try {
-          data = JSON.parse(text);
-        } catch (jsonErr) {
-          throw new Error(`Risposta non valida: ${text}`);
-        }
-
-        if (res.ok) {
-          responseDiv.innerText = data.reply || "❌ Nessuna risposta valida.";
-        } else {
-          responseDiv.innerText = `❌ Errore server: ${data.error || text}`;
-        }
-
+        const data = await res.json();
+        responseDiv.innerText = data.reply || "❌ Nessuna risposta valida.";
       } catch (err) {
         responseDiv.innerText = "❌ Errore: " + err.message;
       }
@@ -108,7 +95,7 @@
         const res = await fetch("/.netlify/functions/ask", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt })
+          body: JSON.stringify({ prompt }),
         });
         const data = await res.json();
         responseDiv.innerText = data.reply || "❌ Nessuna risposta valida.";
