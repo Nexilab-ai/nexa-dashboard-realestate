@@ -2,6 +2,14 @@ const fetch = require("node-fetch");
 
 exports.handler = async (event) => {
   try {
+    // ✅ Gestisci eventuali richieste senza body
+    if (!event.body) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: "No request body provided." }),
+      };
+    }
+
     const body = JSON.parse(event.body);
     const propertyData = body.message || "No property details provided.";
 
@@ -52,6 +60,16 @@ ITALIAN:
     });
 
     const data = await response.json();
+
+    // ✅ Se la risposta non contiene choices
+    if (!data.choices || !data.choices[0]) {
+      console.error("OpenAI API error response:", data);
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: "No valid response from OpenAI API." }),
+      };
+    }
+
     const aiMessage = data.choices[0].message.content;
 
     return {
