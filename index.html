@@ -79,8 +79,21 @@
           body: JSON.stringify({ message: input }),
         });
 
-        const data = await res.json();
-        responseDiv.innerText = data.reply || "❌ Nessuna risposta valida.";
+        const text = await res.text();
+
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch (jsonErr) {
+          throw new Error(`Risposta non valida: ${text}`);
+        }
+
+        if (res.ok) {
+          responseDiv.innerText = data.reply || "❌ Nessuna risposta valida.";
+        } else {
+          responseDiv.innerText = `❌ Errore server: ${data.error || text}`;
+        }
+
       } catch (err) {
         responseDiv.innerText = "❌ Errore: " + err.message;
       }
