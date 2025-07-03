@@ -63,6 +63,7 @@
   </div>
 
   <script>
+    // Funzione barra personalizzata
     async function sendCustomRequest() {
       const input = document.getElementById("customInput").value;
       const responseDiv = document.getElementById("response");
@@ -81,13 +82,16 @@
       }
     }
 
+    // Funzione bottoni generativi
     async function generate(endpoint) {
       const responseDiv = document.getElementById("response");
       responseDiv.innerText = "⌛ Nexa sta generando...";
 
       try {
         const res = await fetch(`/.netlify/functions/${endpoint}`, {
-          method: "POST"
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: "Real estate content generation request." })
         });
         const data = await res.json();
         responseDiv.innerText = data.reply || "❌ Nessuna risposta valida.";
