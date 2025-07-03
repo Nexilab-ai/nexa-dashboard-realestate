@@ -47,23 +47,35 @@
 </head>
 <body>
   <h1>Nexa Dashboard</h1>
-  <input type="text" placeholder="Scrivi una richiesta personalizzata..." id="customInput" />
-  <br />
+
+  <input type="text" placeholder="Scrivi una richiesta personalizzata..." id="customInput"/>
+  <br/>
   <button onclick="sendCustomRequest()">Invia</button>
 
   <div id="response">🤖 Nexa risponde:</div>
 
   <div class="button-grid">
-    <button onclick="generate('generateListing')">Genera Annuncio Immobiliare</button>
-    <button onclick="generate('generateEmotionalDescription')">Genera Descrizione Emotiva</button>
-    <button onclick="generate('generateEmail')">Genera Email Lead</button>
-    <button onclick="generate('generateSocialPlan')">Genera Piano Social</button>
-    <button onclick="generate('generateBrochure')">Genera Brochure PDF</button>
-    <button onclick="generate('generatePresentation')">Genera Presentazione</button>
+    <button onclick="generate('generateListing')">
+      Generates real estate advert<br>Genera annuncio immobiliare
+    </button>
+    <button onclick="generate('generateEmotionalDescription')">
+      Generates emotional description<br>Genera descrizione emotiva
+    </button>
+    <button onclick="generate('generateEmail')">
+      Generates email lead<br>Genera email lead
+    </button>
+    <button onclick="generate('generateSocialPlan')">
+      Generates social plan<br>Genera piano social
+    </button>
+    <button onclick="openCanvaTemplate()">
+      Generates brochure PDF<br>Genera brochure PDF
+    </button>
+    <button onclick="generate('generatePresentation')">
+      Generates presentation<br>Genera presentazione
+    </button>
   </div>
 
   <script>
-    // Funzione barra personalizzata
     async function sendCustomRequest() {
       const input = document.getElementById("customInput").value;
       const responseDiv = document.getElementById("response");
@@ -73,7 +85,7 @@
         const res = await fetch("/.netlify/functions/ask", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt: input })
+          body: JSON.stringify({ prompt: input }),
         });
         const data = await res.json();
         responseDiv.innerText = data.reply || "❌ Nessuna risposta valida.";
@@ -82,7 +94,6 @@
       }
     }
 
-    // Funzione bottoni generativi
     async function generate(endpoint) {
       const responseDiv = document.getElementById("response");
       responseDiv.innerText = "⌛ Nexa sta generando...";
@@ -90,14 +101,16 @@
       try {
         const res = await fetch(`/.netlify/functions/${endpoint}`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: "Real estate content generation request." })
         });
         const data = await res.json();
         responseDiv.innerText = data.reply || "❌ Nessuna risposta valida.";
       } catch (err) {
         responseDiv.innerText = "❌ Errore: " + err.message;
       }
+    }
+
+    function openCanvaTemplate() {
+      window.open('INSERISCI_QUI_IL_TUO_LINK_CANVA', '_blank');
     }
   </script>
 </body>
