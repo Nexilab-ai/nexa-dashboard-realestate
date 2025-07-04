@@ -58,20 +58,14 @@
     <button onclick="generate('generateListing')">
       Generates real estate advert<br>Genera annuncio immobiliare
     </button>
-    <button onclick="generate('generateEmotionalDescription')">
-      Generates emotional description<br>Genera descrizione emotiva
-    </button>
     <button onclick="generate('generateEmail')">
       Generates email lead<br>Genera email lead
     </button>
+    <button onclick="generate('generateBrochure')">
+      Generates brochure content<br>Genera contenuto brochure
+    </button>
     <button onclick="generate('generateSocialPlan')">
       Generates social plan<br>Genera piano social
-    </button>
-    <button onclick="openCanvaTemplate()">
-      Generates brochure PDF<br>Genera brochure PDF
-    </button>
-    <button onclick="generate('generatePresentation')">
-      Generates presentation<br>Genera presentazione
     </button>
   </div>
 
@@ -107,10 +101,6 @@
       } catch (err) {
         responseDiv.innerText = "❌ Errore: " + err.message;
       }
-    }
-
-    function openCanvaTemplate() {
-      window.open('INSERISCI_QUI_IL_TUO_LINK_CANVA', '_blank');
     }
   </script>
 </body>
