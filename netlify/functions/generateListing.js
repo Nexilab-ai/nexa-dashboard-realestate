@@ -2,28 +2,16 @@ const fetch = require("node-fetch");
 
 exports.handler = async (event) => {
   try {
-    const body = JSON.parse(event.body);
-    const propertyData = body.message || "No property details provided.";
-
     const prompt = `
-Write a professional real estate property listing in ENGLISH and ITALIAN.
+Create an English and Italian property listing for a luxury property.
+Use a natural, elegant style without "Call to Action".
 
 Include:
 - Title
-- Detailed description
-- Main features
-- Call to action
+- Introduction
+- Key Features (bullet points)
 
-Property details:
-${propertyData}
-
-Output format:
-
-ENGLISH:
-[English version]
-
-ITALIAN:
-[Italian version]
+Use [Property Title], [Property Features], [Property Location] as placeholders.
 `;
 
     const apiKey = process.env.NEXA_API_KEY;
@@ -37,23 +25,21 @@ ITALIAN:
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
         messages: [
-          { role: "system", content: "You are a professional real estate copywriter." },
-          { role: "user", content: prompt }
+          { role: "system", content: "You are a real estate copywriter." },
+          { role: "user", content: prompt },
         ],
-        temperature: 0.6,
-        max_tokens: 700
+        temperature: 0.5,
+        max_tokens: 600,
       }),
     });
 
     const data = await response.json();
-
     const aiMessage = data.choices[0].message.content;
 
     return {
       statusCode: 200,
       body: JSON.stringify({ reply: aiMessage }),
     };
-
   } catch (error) {
     console.error("Error:", error);
     return {
