@@ -2,27 +2,11 @@ const fetch = require("node-fetch");
 
 exports.handler = async (event) => {
   try {
-    const body = JSON.parse(event.body);
-    const propertyData = body.message || "No property details provided.";
-
     const prompt = `
-Write an EMOTIONAL real estate description in ENGLISH and ITALIAN.
-
-Focus on:
-- Feelings
-- Aspirational lifestyle
-- Emotional connection
-
-Property details:
-${propertyData}
-
-Output format:
-
-ENGLISH:
-[English version]
-
-ITALIAN:
-[Italian version]
+Write an emotional property description in English and Italian.
+No "Call to Action". Use a warm and inspiring tone.
+Include placeholders:
+[Property Title], [Property Features], [Property Location].
 `;
 
     const apiKey = process.env.NEXA_API_KEY;
@@ -36,23 +20,21 @@ ITALIAN:
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
         messages: [
-          { role: "system", content: "You are a creative real estate copywriter." },
-          { role: "user", content: prompt }
+          { role: "system", content: "You are a luxury real estate storyteller." },
+          { role: "user", content: prompt },
         ],
-        temperature: 0.7,
-        max_tokens: 700
+        temperature: 0.6,
+        max_tokens: 600,
       }),
     });
 
     const data = await response.json();
-
     const aiMessage = data.choices[0].message.content;
 
     return {
       statusCode: 200,
       body: JSON.stringify({ reply: aiMessage }),
     };
-
   } catch (error) {
     console.error("Error:", error);
     return {
