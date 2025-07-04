@@ -3,15 +3,48 @@ const fetch = require("node-fetch");
 exports.handler = async (event) => {
   try {
     const prompt = `
-Create an English and Italian property listing for a luxury property.
-Use a natural, elegant style without "Call to Action".
+Create a bilingual (English and Italian) real estate property listing template.
 
 Include:
 - Title
-- Introduction
-- Key Features (bullet points)
+- Introduction paragraph describing the property
+- List of 5 key features
 
-Use [Property Title], [Property Features], [Property Location] as placeholders.
+Use placeholders: 
+[Property Title], [Property Description], [Feature 1], [Feature 2], [Feature 3], [Feature 4], [Feature 5].
+
+Write in a professional tone. 
+Write the Italian version as an original, not a translation.
+
+Format:
+
+ENGLISH:
+TITLE:
+[Property Title]
+
+INTRODUCTION:
+[Property Description]
+
+FEATURES:
+- [Feature 1]
+- [Feature 2]
+- [Feature 3]
+- [Feature 4]
+- [Feature 5]
+
+ITALIANO:
+TITOLO:
+[Titolo della Proprietà]
+
+INTRODUZIONE:
+[Descrizione della Proprietà]
+
+CARATTERISTICHE:
+- [Caratteristica 1]
+- [Caratteristica 2]
+- [Caratteristica 3]
+- [Caratteristica 4]
+- [Caratteristica 5]
 `;
 
     const apiKey = process.env.NEXA_API_KEY;
@@ -28,8 +61,8 @@ Use [Property Title], [Property Features], [Property Location] as placeholders.
           { role: "system", content: "You are a real estate copywriter." },
           { role: "user", content: prompt },
         ],
-        temperature: 0.5,
-        max_tokens: 600,
+        temperature: 0.4,
+        max_tokens: 700,
       }),
     });
 
