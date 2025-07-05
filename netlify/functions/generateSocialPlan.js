@@ -2,25 +2,26 @@ const fetch = require("node-fetch");
 
 exports.handler = async (event) => {
   try {
-    const prompt = `
-Create a 5-day social media content plan for a property.
-Write in English first, then Italian.
-Do not mix languages. No "Call to Action".
+    const body = JSON.parse(event.body);
+    const lang = body.language || "english";
 
-Use placeholders:
-[Property Title], [Property Features].
+    let prompt = "";
 
-Format:
-ENGLISH:
-Day 1:
-...
-Day 5:
+    if (lang === "english") {
+      prompt = `Generate 6 social media posts to promote a property, one for each platform: Facebook, Instagram, LinkedIn, Twitter, TikTok, YouTube Shorts. For each post, provide:
 
-ITALIAN:
-Day 1:
-...
-Day 5:
-`;
+- Platform
+- Text
+- Hashtags
+- Suggested Image Idea`;
+    } else {
+      prompt = `Genera 6 contenuti social per promuovere un immobile, uno per ciascuna piattaforma: Facebook, Instagram, LinkedIn, Twitter, TikTok, YouTube Shorts. Per ogni post indica:
+
+- Piattaforma
+- Testo
+- Hashtag
+- Idea immagine suggerita`;
+    }
 
     const apiKey = process.env.NEXA_API_KEY;
 
@@ -33,11 +34,11 @@ Day 5:
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
         messages: [
-          { role: "system", content: "You are a social media strategist." },
-          { role: "user", content: prompt },
+          { role: "system", content: "You are a professional real estate social media strategist." },
+          { role: "user", content: prompt }
         ],
-        temperature: 0.5,
-        max_tokens: 700,
+        temperature: 0.7,
+        max_tokens: 900
       }),
     });
 
@@ -49,7 +50,6 @@ Day 5:
       body: JSON.stringify({ reply: aiMessage }),
     };
   } catch (error) {
-    console.error("Error:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: error.message }),
