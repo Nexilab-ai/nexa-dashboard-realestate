@@ -2,9 +2,10 @@ const fetch = require("node-fetch");
 
 exports.handler = async (event) => {
   try {
-    const body = JSON.parse(event.body);
-    const lang = body.language || "english";
-    const prompt = "Test prompt to check API.";
+    const body = JSON.parse(event.body || "{}");
+    const lang = body.language || "italian";
+
+    const prompt = "Test di connessione. Rispondi con una frase breve.";
 
     const apiKey = process.env.NEXA_API_KEY;
 
@@ -17,7 +18,7 @@ exports.handler = async (event) => {
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
         messages: [
-          { role: "system", content: "You are a professional real estate assistant." },
+          { role: "system", content: "Sei un assistente immobiliare professionale." },
           { role: "user", content: prompt }
         ],
         temperature: 0.6,
@@ -25,18 +26,14 @@ exports.handler = async (event) => {
       }),
     });
 
-    const text = await response.text();
-    console.log("RAW RESPONSE:", text);
+    const raw = await response.text();
+    console.log("RAW RESPONSE:", raw);
 
     if (!response.ok) {
-      throw new Error(`API error ${response.status}: ${text}`);
+      throw new Error(`API error ${response.status}: ${raw}`);
     }
 
-    if (!text) {
-      throw new Error("Empty response from API");
-    }
-
-    const data = JSON.parse(text);
+    const data = JSON.parse(raw);
 
     if (!data.choices || !data.choices[0]) {
       throw new Error("No choices returned");
@@ -50,7 +47,7 @@ exports.handler = async (event) => {
     };
 
   } catch (error) {
-    console.error("Error:", error);
+    console.error("ERROR:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: error.message }),
