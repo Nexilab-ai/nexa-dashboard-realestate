@@ -2,47 +2,26 @@ const fetch = require("node-fetch");
 
 exports.handler = async (event) => {
   try {
-    const prompt = `
-Create a bilingual property brochure content template (English and Italian).
+    const body = JSON.parse(event.body);
+    const lang = body.language || "english";
 
-Include placeholders:
-[Property Title], [Property Description], [Key Features], [Contact Information].
+    let prompt = "";
 
-Write in a neutral, elegant tone. 
-Write Italian version as an original.
+    if (lang === "english") {
+      prompt = `Write a brochure text for a luxury property with placeholders. Include:
 
-Format:
+- Title
+- Description
+- Key Features
+- Contact Information.`;
+    } else {
+      prompt = `Scrivi un testo per una brochure di un immobile di prestigio, con segnaposto. Includi:
 
-ENGLISH:
-TITLE:
-[Property Title]
-
-DESCRIPTION:
-[Property Description]
-
-FEATURES:
-- [Feature 1]
-- [Feature 2]
-- [Feature 3]
-
-CONTACT:
-[Contact Information]
-
-ITALIANO:
-TITOLO:
-[Titolo della Proprietà]
-
-DESCRIZIONE:
-[Descrizione della Proprietà]
-
-CARATTERISTICHE:
-- [Caratteristica 1]
-- [Caratteristica 2]
-- [Caratteristica 3]
-
-CONTATTI:
-[Informazioni di Contatto]
-`;
+- Titolo
+- Descrizione
+- Caratteristiche principali
+- Informazioni di contatto.`;
+    }
 
     const apiKey = process.env.NEXA_API_KEY;
 
@@ -55,11 +34,11 @@ CONTATTI:
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
         messages: [
-          { role: "system", content: "You are a real estate marketing expert." },
-          { role: "user", content: prompt },
+          { role: "system", content: "You are a professional real estate copywriter." },
+          { role: "user", content: prompt }
         ],
-        temperature: 0.4,
-        max_tokens: 700,
+        temperature: 0.6,
+        max_tokens: 700
       }),
     });
 
@@ -71,7 +50,6 @@ CONTATTI:
       body: JSON.stringify({ reply: aiMessage }),
     };
   } catch (error) {
-    console.error("Error:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: error.message }),
