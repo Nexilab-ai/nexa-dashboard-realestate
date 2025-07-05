@@ -1,135 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Nexa Dashboard</title>
+  <title>Nexa Dashboard - Real Estate</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f5f5f5;
       text-align: center;
       padding: 40px;
     }
-    input {
-      padding: 10px;
-      width: 300px;
-      font-size: 16px;
-    }
     button {
       padding: 10px 20px;
-      font-size: 14px;
-      background-color: #28a745;
-      color: white;
-      border: none;
       margin: 5px;
+      font-size: 14px;
       cursor: pointer;
-      border-radius: 6px;
     }
     #response {
       margin-top: 20px;
-      font-size: 18px;
-      color: #333;
+      text-align: left;
+      white-space: pre-wrap;
       max-width: 800px;
       margin-left: auto;
       margin-right: auto;
-      text-align: left;
-      white-space: pre-wrap;
-    }
-    .button-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 30px;
-      gap: 10px;
-    }
-    .language-selector {
-      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      background: #f5f5f5;
     }
   </style>
 </head>
 <body>
   <h1>Nexa Dashboard</h1>
-
-  <div class="language-selector">
-    <label for="languageSelector">🌐 Select Language:</label>
-    <select id="languageSelector" onchange="updateLanguage()">
-      <option value="english">English</option>
+  <label>
+    Select Language:
+    <select id="language">
       <option value="italian">Italiano</option>
+      <option value="english">English</option>
     </select>
-  </div>
-
-  <input type="text" placeholder="Type a custom request..." id="customInput"/>
-  <br/>
+  </label>
+  <br/><br/>
+  <input type="text" id="customInput" placeholder="Type a custom request..." style="width:300px; padding:8px;"/>
+  <br/><br/>
   <button onclick="sendCustomRequest()">Send</button>
-
-  <div id="response">🤖 Nexa is ready.</div>
-
-  <div class="button-grid">
-    <button id="btnListing" onclick="generate('generateListing')"></button>
-    <button id="btnShortListing" onclick="generate('generateShortListing')"></button>
-    <button id="btnEmail" onclick="generate('generateEmail')"></button>
-    <button id="btnBrochure" onclick="generate('generateBrochure')"></button>
-    <button id="btnSocialPlan" onclick="generate('generateSocialPlan')"></button>
-    <button id="btnSocialCaptions" onclick="generate('generateSocialCaptions')"></button>
-    <button id="btnVideoScript" onclick="generate('generateVideoScript')"></button>
+  <br/><br/>
+  <div>
+    <button onclick="generate('generateListing')">Generate real estate listing</button>
   </div>
+  <div id="response"></div>
 
   <script>
-    function updateLanguage() {
-      const lang = document.getElementById("languageSelector").value;
-
-      if (lang === "english") {
-        document.getElementById("customInput").placeholder = "Type a custom request...";
-        document.getElementById("btnListing").innerText = "Generate real estate advert";
-        document.getElementById("btnShortListing").innerText = "Generate short property listing";
-        document.getElementById("btnEmail").innerText = "Generate email lead";
-        document.getElementById("btnBrochure").innerText = "Generate brochure content";
-        document.getElementById("btnSocialPlan").innerText = "Generate social media plan";
-        document.getElementById("btnSocialCaptions").innerText = "Generate social captions";
-        document.getElementById("btnVideoScript").innerText = "Generate video script";
-      } else {
-        document.getElementById("customInput").placeholder = "Scrivi una richiesta personalizzata...";
-        document.getElementById("btnListing").innerText = "Genera annuncio immobiliare";
-        document.getElementById("btnShortListing").innerText = "Genera annuncio breve";
-        document.getElementById("btnEmail").innerText = "Genera email contatto cliente";
-        document.getElementById("btnBrochure").innerText = "Genera contenuto brochure";
-        document.getElementById("btnSocialPlan").innerText = "Genera piano social";
-        document.getElementById("btnSocialCaptions").innerText = "Genera testi social";
-        document.getElementById("btnVideoScript").innerText = "Genera script video breve";
-      }
-    }
-
-    updateLanguage(); // Set default labels
-
     async function sendCustomRequest() {
       const input = document.getElementById("customInput").value;
+      const lang = document.getElementById("language").value;
       const responseDiv = document.getElementById("response");
-      responseDiv.innerText = "⌛ Nexa is processing your request...";
+      responseDiv.innerText = "Generating...";
 
       try {
         const res = await fetch("/.netlify/functions/ask", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt: input }),
+          body: JSON.stringify({ prompt: input, language: lang })
         });
         const data = await res.json();
-        responseDiv.innerText = data.reply || "❌ No valid response.";
+        responseDiv.innerText = data.reply;
       } catch (err) {
         responseDiv.innerText = "❌ Error: " + err.message;
       }
     }
 
     async function generate(endpoint) {
+      const lang = document.getElementById("language").value;
       const responseDiv = document.getElementById("response");
-      responseDiv.innerText = "⌛ Nexa is generating content...";
+      responseDiv.innerText = "Generating...";
 
       try {
         const res = await fetch(`/.netlify/functions/${endpoint}`, {
           method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ language: lang })
         });
         const data = await res.json();
-        responseDiv.innerText = data.reply || "❌ No valid response.";
+        responseDiv.innerText = data.reply;
       } catch (err) {
         responseDiv.innerText = "❌ Error: " + err.message;
       }
