@@ -9,15 +9,39 @@ exports.handler = async (event) => {
 
     if (lang === "english") {
       prompt = `
-Write a professional real estate listing in English with placeholders:
+Write a professional real estate listing in English, using this structure with placeholders:
 
-[Area], we offer for sale [property type] located on [floor] of [building description]. The property has about [square meters] sqm and includes [main rooms]. Features: [highlights]. Accessories: [details]. Location: [main services]. Availability: [availability]. Price: €[price]. Contact: [phone] / [email].
+In [area/neighborhood/location], we offer for sale [property type] located on the [floor] of [building description, e.g., "a small condominium" / "a quiet residential context"]. The property has a surface of approximately [square meters] sqm and includes [number of rooms and main features, e.g., "a living room with open kitchen, two bedrooms, and a bathroom with window"].
+
+The property is in [maintenance status, e.g., "good internal conditions" / "original condition" / "excellent condition"] and stands out for [features or strengths, e.g., "double exposure" / "brightness of the rooms" / "functional layout of spaces"], offering a comfortable and versatile environment.
+
+It also includes [accessories, e.g., "a balcony and a cellar" / "an outdoor parking space" / "a private garden of [sqm] sqm"], ideal for various housing needs.
+
+The location is strategic and convenient to reach [main services, e.g., "supermarkets, schools, public transport stops, and shops"], making the property suitable for [target, e.g., "families" / "couples" / "professionals" / "investors"].
+
+The property is [availability status, e.g., "immediately available" / "available upon deed"].
+
+Asking price: €[price]
+
+For more information or to schedule a visit, contact us at [phone number] or write to [email].
 `;
     } else {
       prompt = `
-Scrivi un annuncio immobiliare professionale in italiano con segnaposto:
+Scrivi un annuncio immobiliare professionale in italiano, utilizzando questa struttura con segnaposto:
 
-In [zona], proponiamo in vendita [tipologia immobile] situato al [piano] di [descrizione stabile]. La proprietà ha circa [metri quadri] mq e si compone di [ambienti principali]. Caratteristiche: [punti di forza]. Accessori: [dettagli]. Posizione: [servizi principali]. Disponibilità: [stato]. Prezzo: €[prezzo]. Contatti: [telefono] / [email].
+In [zona/quartiere/località], proponiamo in vendita [tipologia immobile] situato al [piano] di [descrizione stabile, es. “una palazzina di poche unità” / “un contesto condominiale tranquillo”]. La proprietà si sviluppa su una superficie di circa [metri quadri] mq e si compone di [numero locali e descrizione ambienti principali, es. “un soggiorno con cucina a vista, due camere da letto e un bagno finestrato”].
+
+L’immobile si presenta in [stato manutentivo, es. “buone condizioni interne” / “stato originale” / “ottimo stato”] e si distingue per [caratteristiche di pregio o punti di forza, es. “la doppia esposizione” / “la luminosità degli ambienti” / “la disposizione funzionale degli spazi”], offrendo un ambiente confortevole e versatile.
+
+Completano la proprietà [pertinenze/accessori, es. “un balcone e una cantina” / “un posto auto scoperto” / “un giardino privato di [mq] mq”], ideali per soddisfare le diverse esigenze abitative.
+
+La posizione è strategica e comoda per raggiungere [servizi principali, es. “supermercati, scuole, fermate dei mezzi pubblici e negozi”], rendendo l’immobile adatto a [target, es. “famiglie” / “coppie” / “professionisti” / “investitori”].
+
+L’abitazione è [stato disponibilità, es. “libera subito” / “disponibile al rogito”].
+
+Prezzo richiesto: €[prezzo]
+
+Per ulteriori informazioni o per fissare una visita, contattaci al [numero di telefono] oppure scrivi a [email].
 `;
     }
 
@@ -36,7 +60,7 @@ In [zona], proponiamo in vendita [tipologia immobile] situato al [piano] di [des
           { role: "user", content: prompt }
         ],
         temperature: 0.4,
-        max_tokens: 600
+        max_tokens: 700
       }),
     });
 
