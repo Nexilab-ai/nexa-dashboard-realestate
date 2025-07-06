@@ -1,15 +1,9 @@
-const { Configuration, OpenAIApi } = require("openai");
-
-const configuration = new Configuration({
-  apiKey: process.env.NEXA_API_KEY,
-});
-
-const openai = new OpenAIApi(configuration);
+const fetch = require("node-fetch");
 
 exports.handler = async (event) => {
   try {
     const body = JSON.parse(event.body || "{}");
-    const language = body.language || "italian";
+    const language = body.language === "english" ? "english" : "italian";
 
     console.log("Lingua selezionata:", language);
 
@@ -50,10 +44,10 @@ For more information or to schedule a visit, contact us at [phone number] or ema
       body: JSON.stringify({ reply: prompt }),
     };
   } catch (error) {
-    console.error("Errore nella funzione Lambda:", error);
+    console.error("Errore:", error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ reply: "❌ Errore interno: " + error.message }),
+      body: JSON.stringify({ error: error.message }),
     };
   }
 };
