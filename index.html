@@ -3,18 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Nexa Dashboard - Real Estate</title>
+  <title>Nexa Premium Dashboard</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
       padding: 40px;
+      background: #f5f5f5;
     }
     button {
       padding: 10px 20px;
       margin: 5px;
       font-size: 14px;
       cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: #fff;
     }
     #response {
       margin-top: 20px;
@@ -25,53 +30,54 @@
       margin-right: auto;
       border: 1px solid #ccc;
       padding: 10px;
-      background: #f5f5f5;
+      background: #fff;
+    }
+    select {
+      padding: 6px;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
-  <h1>Nexa Dashboard</h1>
+  <h1>Nexa Premium Dashboard</h1>
+
   <label>
-    Select Language:
+    Seleziona Lingua / Select Language:
     <select id="language">
       <option value="italian">Italiano</option>
       <option value="english">English</option>
     </select>
   </label>
   <br/><br/>
-  <input type="text" id="customInput" placeholder="Type a custom request..." style="width:300px; padding:8px;"/>
-  <br/><br/>
-  <button onclick="sendCustomRequest()">Send</button>
-  <br/><br/>
+
   <div>
-    <button onclick="generate('generateListing')">Generate real estate listing</button>
+    <button onclick="generate('generateListing')">Genera Annuncio Immobiliare</button>
+    <button onclick="generate('generateShortListing')">Genera Annuncio Breve</button>
+    <button onclick="generate('generateEmail')">Genera Email Contatto Cliente</button>
+    <button onclick="generate('generateBrochure')">Genera Contenuto Brochure</button>
+    <button onclick="generate('generateSocialPlan')">Genera Piano Social</button>
+    <button onclick="generate('generateSocialTexts')">Genera Testi Social</button>
+    <button onclick="generate('generateVideoScript')">Genera Script Video Breve</button>
   </div>
+
+  <br/>
+  <div>
+    <button onclick="generate('generatePDF')">Scarica PDF Editabile</button>
+    <button onclick="generate('generateDocsLink')">Apri Google Docs Duplicabile</button>
+    <button onclick="generate('generateShareLink')">Crea Link di Condivisione</button>
+  </div>
+
+  <br/>
+  <input type="text" id="customInput" placeholder="Scrivi una richiesta personalizzata..." style="width:300px; padding:8px;"/>
+  <button onclick="sendCustomRequest()">Invia Richiesta Personalizzata</button>
+
   <div id="response"></div>
 
   <script>
-    async function sendCustomRequest() {
-      const input = document.getElementById("customInput").value;
-      const lang = document.getElementById("language").value;
-      const responseDiv = document.getElementById("response");
-      responseDiv.innerText = "Generating...";
-
-      try {
-        const res = await fetch("/.netlify/functions/ask", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt: input, language: lang })
-        });
-        const data = await res.json();
-        responseDiv.innerText = data.reply;
-      } catch (err) {
-        responseDiv.innerText = "❌ Error: " + err.message;
-      }
-    }
-
     async function generate(endpoint) {
       const lang = document.getElementById("language").value;
       const responseDiv = document.getElementById("response");
-      responseDiv.innerText = "Generating...";
+      responseDiv.innerText = "⌛ Generazione in corso...";
 
       try {
         const res = await fetch(`/.netlify/functions/${endpoint}`, {
@@ -82,7 +88,26 @@
         const data = await res.json();
         responseDiv.innerText = data.reply;
       } catch (err) {
-        responseDiv.innerText = "❌ Error: " + err.message;
+        responseDiv.innerText = "❌ Errore: " + err.message;
+      }
+    }
+
+    async function sendCustomRequest() {
+      const input = document.getElementById("customInput").value;
+      const lang = document.getElementById("language").value;
+      const responseDiv = document.getElementById("response");
+      responseDiv.innerText = "⌛ Generazione in corso...";
+
+      try {
+        const res = await fetch("/.netlify/functions/ask", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: input, language: lang })
+        });
+        const data = await res.json();
+        responseDiv.innerText = data.reply;
+      } catch (err) {
+        responseDiv.innerText = "❌ Errore: " + err.message;
       }
     }
   </script>
