@@ -3,7 +3,7 @@ const fetch = require("node-fetch");
 exports.handler = async (event) => {
   try {
     const body = JSON.parse(event.body);
-    const lang = body.language || "italian";
+    const lang = body.language === "english" ? "english" : "italian";
 
     let prompt = "";
 
@@ -11,13 +11,13 @@ exports.handler = async (event) => {
       prompt = `
 Write a professional real estate listing in English, using this structure with placeholders:
 
-In [area/neighborhood/location], we offer for sale [property type] located on the [floor] of [building description, e.g., "a small condominium" / "a quiet residential context"]. The property has a surface of approximately [square meters] sqm and includes [number of rooms and main features, e.g., "a living room with open kitchen, two bedrooms, and a bathroom with window"].
+In [area/neighborhood/location], we offer for sale [property type] located on the [floor] of [building description, e.g., "a small building with few units" / "a quiet condominium setting"]. The property has a surface of approximately [square meters] sqm and comprises [number of rooms and main room descriptions, e.g., "a living room with open kitchen, two bedrooms, and a bathroom with window"].
 
-The property is in [maintenance status, e.g., "good internal conditions" / "original condition" / "excellent condition"] and stands out for [features or strengths, e.g., "double exposure" / "brightness of the rooms" / "functional layout of spaces"], offering a comfortable and versatile environment.
+The property is in [maintenance status, e.g., "good internal conditions" / "original state" / "excellent condition"] and stands out for [features or strengths, e.g., "double exposure" / "brightness of the rooms" / "functional layout"], offering a comfortable and versatile environment.
 
-It also includes [accessories, e.g., "a balcony and a cellar" / "an outdoor parking space" / "a private garden of [sqm] sqm"], ideal for various housing needs.
+Included with the property are [accessories, e.g., "a balcony and a cellar" / "an uncovered parking space" / "a private garden of [sqm] sqm"], ideal for meeting various housing needs.
 
-The location is strategic and convenient to reach [main services, e.g., "supermarkets, schools, public transport stops, and shops"], making the property suitable for [target, e.g., "families" / "couples" / "professionals" / "investors"].
+The location is strategic and convenient for accessing [main services, e.g., "supermarkets, schools, public transport stops, and shops"], making the property suitable for [target, e.g., "families" / "couples" / "professionals" / "investors"].
 
 The property is [availability status, e.g., "immediately available" / "available upon deed"].
 
@@ -57,7 +57,7 @@ Per ulteriori informazioni o per fissare una visita, contattaci al [numero di te
           { role: "system", content: "You are a professional real estate copywriter." },
           { role: "user", content: prompt }
         ],
-        temperature: 0.4,
+        temperature: 0.3,
         max_tokens: 700
       }),
     });
