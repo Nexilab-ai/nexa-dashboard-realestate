@@ -2,10 +2,24 @@ const fetch = require("node-fetch");
 
 exports.handler = async (event) => {
   try {
-    const body = JSON.parse(event.body || "{}");
+    const body = JSON.parse(event.body);
     const lang = body.language || "italian";
 
-    const prompt = "Test di connessione. Rispondi con una frase breve.";
+    let prompt = "";
+
+    if (lang === "english") {
+      prompt = `
+Write a professional real estate listing in English with placeholders:
+
+[Area], we offer for sale [property type] located on [floor] of [building description]. The property has about [square meters] sqm and includes [main rooms]. Features: [highlights]. Accessories: [details]. Location: [main services]. Availability: [availability]. Price: €[price]. Contact: [phone] / [email].
+`;
+    } else {
+      prompt = `
+Scrivi un annuncio immobiliare professionale in italiano con segnaposto:
+
+In [zona], proponiamo in vendita [tipologia immobile] situato al [piano] di [descrizione stabile]. La proprietà ha circa [metri quadri] mq e si compone di [ambienti principali]. Caratteristiche: [punti di forza]. Accessori: [dettagli]. Posizione: [servizi principali]. Disponibilità: [stato]. Prezzo: €[prezzo]. Contatti: [telefono] / [email].
+`;
+    }
 
     const apiKey = process.env.NEXA_API_KEY;
 
@@ -18,39 +32,27 @@ exports.handler = async (event) => {
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
         messages: [
-          { role: "system", content: "Sei un assistente immobiliare professionale." },
+          { role: "system", content: "You are a professional real estate copywriter." },
           { role: "user", content: prompt }
         ],
-        temperature: 0.6,
-        max_tokens: 100
+        temperature: 0.4,
+        max_tokens: 600
       }),
     });
 
-    const raw = await response.text();
-    console.log("RAW RESPONSE:", raw);
-
-    if (!response.ok) {
-      throw new Error(`API error ${response.status}: ${raw}`);
-    }
-
-    const data = JSON.parse(raw);
-
-    if (!data.choices || !data.choices[0]) {
-      throw new Error("No choices returned");
-    }
-
+    const data = await response.json();
     const aiMessage = data.choices[0].message.content;
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ reply: aiMessage }),
+      body: JSON.stringify({ reply: aiMessage })
     };
 
   } catch (error) {
-    console.error("ERROR:", error);
+    console.error("Error:", error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: error.message }),
+      body: JSON.stringify({ error: error.message })
     };
   }
 };
