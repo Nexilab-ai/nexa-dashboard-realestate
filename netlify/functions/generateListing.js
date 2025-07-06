@@ -27,8 +27,6 @@ For more information or to schedule a visit, contact us at [phone number] or wri
 `;
     } else {
       prompt = `
-Scrivi un annuncio immobiliare professionale in italiano, utilizzando questa struttura con segnaposto:
-
 In [zona/quartiere/località], proponiamo in vendita [tipologia immobile] situato al [piano] di [descrizione stabile, es. “una palazzina di poche unità” / “un contesto condominiale tranquillo”]. La proprietà si sviluppa su una superficie di circa [metri quadri] mq e si compone di [numero locali e descrizione ambienti principali, es. “un soggiorno con cucina a vista, due camere da letto e un bagno finestrato”].
 
 L’immobile si presenta in [stato manutentivo, es. “buone condizioni interne” / “stato originale” / “ottimo stato”] e si distingue per [caratteristiche di pregio o punti di forza, es. “la doppia esposizione” / “la luminosità degli ambienti” / “la disposizione funzionale degli spazi”], offrendo un ambiente confortevole e versatile.
