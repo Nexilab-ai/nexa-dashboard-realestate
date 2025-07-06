@@ -43,28 +43,34 @@
 
   <label>
     Seleziona Lingua / Select Language:
-    <select id="languageSelect">
+    <select id="languageSelect" onchange="updateButtonLabels()">
       <option value="italian">Italiano</option>
       <option value="english">English</option>
     </select>
   </label>
   <br/><br/>
 
-  <div>
-    <button onclick="generate('generateListing')">Genera Annuncio Immobiliare</button>
-    <button onclick="generate('generateShortListing')">Genera Annuncio Breve</button>
-    <button onclick="generate('generateEmail')">Genera Email Contatto Cliente</button>
-    <button onclick="generate('generateBrochure')">Genera Contenuto Brochure</button>
-    <button onclick="generate('generateSocialPlan')">Genera Piano Social</button>
-    <button onclick="generate('generateSocialTexts')">Genera Testi Social</button>
-    <button onclick="generate('generateVideoScript')">Genera Script Video Breve</button>
+  <div id="buttonContainer">
+    <button id="btnListing" onclick="generate('generateListing')"></button>
+    <button id="btnShortListing" onclick="generate('generateShortListing')"></button>
+    <button id="btnEmail" onclick="generate('generateEmail')"></button>
+    <button id="btnBrochure" onclick="generate('generateBrochure')"></button>
+    <button id="btnSocialPlan" onclick="generate('generateSocialPlan')"></button>
+    <button id="btnSocialTexts" onclick="generate('generateSocialTexts')"></button>
+    <button id="btnVideoScript" onclick="generate('generateVideoScript')"></button>
+    <button id="btnPDF" onclick="generate('generatePDF')"></button>
+    <button id="btnDocsLink" onclick="generate('generateDocsLink')"></button>
   </div>
 
   <br/>
+  <h3>Social Posts</h3>
   <div>
-    <button onclick="generate('generatePDF')">Scarica PDF Editabile</button>
-    <button onclick="generate('generateDocsLink')">Apri Google Docs Duplicabile</button>
-    <button onclick="generate('generateShareLink')">Crea Link di Condivisione</button>
+    <button id="btnFacebook" onclick="generate('generateFacebookPost')"></button>
+    <button id="btnInstagram" onclick="generate('generateInstagramPost')"></button>
+    <button id="btnLinkedIn" onclick="generate('generateLinkedInPost')"></button>
+    <button id="btnTwitter" onclick="generate('generateTwitterPost')"></button>
+    <button id="btnTikTok" onclick="generate('generateTikTokPost')"></button>
+    <button id="btnYouTube" onclick="generate('generateYouTubeShortsPost')"></button>
   </div>
 
   <br/>
@@ -74,6 +80,49 @@
   <div id="response"></div>
 
   <script>
+    function updateButtonLabels() {
+      const lang = document.getElementById("languageSelect").value;
+
+      if (lang === "english") {
+        document.getElementById("btnListing").innerText = "Generate Property Listing";
+        document.getElementById("btnShortListing").innerText = "Generate Short Listing";
+        document.getElementById("btnEmail").innerText = "Generate Contact Email";
+        document.getElementById("btnBrochure").innerText = "Generate Brochure Content";
+        document.getElementById("btnSocialPlan").innerText = "Generate Social Plan";
+        document.getElementById("btnSocialTexts").innerText = "Generate Social Captions";
+        document.getElementById("btnVideoScript").innerText = "Generate Video Script";
+        document.getElementById("btnPDF").innerText = "Download Editable PDF";
+        document.getElementById("btnDocsLink").innerText = "Open Google Docs Template";
+
+        document.getElementById("btnFacebook").innerText = "Generate Facebook Post";
+        document.getElementById("btnInstagram").innerText = "Generate Instagram Post";
+        document.getElementById("btnLinkedIn").innerText = "Generate LinkedIn Post";
+        document.getElementById("btnTwitter").innerText = "Generate Twitter Post";
+        document.getElementById("btnTikTok").innerText = "Generate TikTok Script";
+        document.getElementById("btnYouTube").innerText = "Generate YouTube Shorts Script";
+      } else {
+        document.getElementById("btnListing").innerText = "Genera Annuncio Immobiliare";
+        document.getElementById("btnShortListing").innerText = "Genera Annuncio Breve";
+        document.getElementById("btnEmail").innerText = "Genera Email Contatto";
+        document.getElementById("btnBrochure").innerText = "Genera Contenuto Brochure";
+        document.getElementById("btnSocialPlan").innerText = "Genera Piano Social";
+        document.getElementById("btnSocialTexts").innerText = "Genera Caption Social";
+        document.getElementById("btnVideoScript").innerText = "Genera Script Video";
+        document.getElementById("btnPDF").innerText = "Scarica PDF Editabile";
+        document.getElementById("btnDocsLink").innerText = "Apri Google Docs";
+
+        document.getElementById("btnFacebook").innerText = "Genera Post Facebook";
+        document.getElementById("btnInstagram").innerText = "Genera Post Instagram";
+        document.getElementById("btnLinkedIn").innerText = "Genera Post LinkedIn";
+        document.getElementById("btnTwitter").innerText = "Genera Post Twitter";
+        document.getElementById("btnTikTok").innerText = "Genera Script TikTok";
+        document.getElementById("btnYouTube").innerText = "Genera Script YouTube Shorts";
+      }
+    }
+
+    // Initialize labels
+    updateButtonLabels();
+
     async function generate(endpoint) {
       const lang = document.getElementById("languageSelect").value;
       const responseDiv = document.getElementById("response");
