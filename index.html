@@ -43,7 +43,7 @@
 
   <label>
     Seleziona Lingua / Select Language:
-    <select id="language">
+    <select id="languageSelect">
       <option value="italian">Italiano</option>
       <option value="english">English</option>
     </select>
@@ -75,7 +75,7 @@
 
   <script>
     async function generate(endpoint) {
-      const lang = document.getElementById("language").value;
+      const lang = document.getElementById("languageSelect").value;
       const responseDiv = document.getElementById("response");
       responseDiv.innerText = "⌛ Generazione in corso...";
 
@@ -93,16 +93,16 @@
     }
 
     async function sendCustomRequest() {
+      const lang = document.getElementById("languageSelect").value;
       const input = document.getElementById("customInput").value;
-      const lang = document.getElementById("language").value;
       const responseDiv = document.getElementById("response");
       responseDiv.innerText = "⌛ Generazione in corso...";
 
       try {
-        const res = await fetch("/.netlify/functions/ask", {
+        const res = await fetch(`/.netlify/functions/ask`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt: input, language: lang })
+          body: JSON.stringify({ language: lang, prompt: input })
         });
         const data = await res.json();
         responseDiv.innerText = data.reply;
