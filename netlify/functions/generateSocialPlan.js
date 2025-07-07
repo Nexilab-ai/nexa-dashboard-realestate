@@ -2,54 +2,83 @@ const fetch = require("node-fetch");
 
 exports.handler = async (event) => {
   try {
-    const body = JSON.parse(event.body);
-    const lang = body.language || "english";
+    const body = JSON.parse(event.body || "{}");
+    const language = body.language === "english" ? "english" : "italian";
 
     let prompt = "";
 
-    if (lang === "english") {
-      prompt = `Generate 6 social media posts to promote a property, one for each platform: Facebook, Instagram, LinkedIn, Twitter, TikTok, YouTube Shorts. For each post, provide:
+    if (language === "italian") {
+      prompt = `Crea un piano social personalizzato per promuovere una proprietà immobiliare. Inserisci i segnaposto per personalizzare i dettagli:
 
-- Platform
-- Text
-- Hashtags
-- Suggested Image Idea`;
+1. **Facebook**
+- Testo: [Testo personalizzato Facebook]
+- Hashtag: [Hashtag]
+- Idea immagine: [Descrizione immagine]
+
+2. **Instagram**
+- Testo: [Testo personalizzato Instagram]
+- Hashtag: [Hashtag]
+- Idea immagine: [Descrizione immagine]
+
+3. **LinkedIn**
+- Testo: [Testo personalizzato LinkedIn]
+- Hashtag: [Hashtag]
+- Idea immagine: [Descrizione immagine]
+
+4. **X (Twitter)**
+- Testo: [Testo personalizzato Twitter]
+- Hashtag: [Hashtag]
+- Idea immagine: [Descrizione immagine]
+
+5. **TikTok**
+- Testo: [Testo personalizzato TikTok]
+- Hashtag: [Hashtag]
+- Idea video: [Descrizione video]
+
+6. **YouTube Shorts**
+- Testo: [Testo personalizzato YouTube Shorts]
+- Hashtag: [Hashtag]
+- Idea video: [Descrizione video]`;
     } else {
-      prompt = `Genera 6 contenuti social per promuovere un immobile, uno per ciascuna piattaforma: Facebook, Instagram, LinkedIn, Twitter, TikTok, YouTube Shorts. Per ogni post indica:
+      prompt = `Create a customized social media plan to promote a real estate property. Include placeholders to personalize details:
 
-- Piattaforma
-- Testo
-- Hashtag
-- Idea immagine suggerita`;
+1. **Facebook**
+- Text: [Custom Facebook text]
+- Hashtags: [Hashtags]
+- Image idea: [Description]
+
+2. **Instagram**
+- Text: [Custom Instagram text]
+- Hashtags: [Hashtags]
+- Image idea: [Description]
+
+3. **LinkedIn**
+- Text: [Custom LinkedIn text]
+- Hashtags: [Hashtags]
+- Image idea: [Description]
+
+4. **X (Twitter)**
+- Text: [Custom Twitter text]
+- Hashtags: [Hashtags]
+- Image idea: [Description]
+
+5. **TikTok**
+- Text: [Custom TikTok text]
+- Hashtags: [Hashtags]
+- Video idea: [Description]
+
+6. **YouTube Shorts**
+- Text: [Custom YouTube Shorts text]
+- Hashtags: [Hashtags]
+- Video idea: [Description]`;
     }
-
-    const apiKey = process.env.NEXA_API_KEY;
-
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        messages: [
-          { role: "system", content: "You are a professional real estate social media strategist." },
-          { role: "user", content: prompt }
-        ],
-        temperature: 0.7,
-        max_tokens: 900
-      }),
-    });
-
-    const data = await response.json();
-    const aiMessage = data.choices[0].message.content;
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ reply: aiMessage }),
+      body: JSON.stringify({ reply: prompt }),
     };
   } catch (error) {
+    console.error("Errore:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: error.message }),
