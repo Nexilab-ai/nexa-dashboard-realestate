@@ -2,44 +2,49 @@ const fetch = require("node-fetch");
 
 exports.handler = async (event) => {
   try {
-    const body = JSON.parse(event.body);
-    const lang = body.language || "english";
+    const body = JSON.parse(event.body || "{}");
+    const language = body.language === "english" ? "english" : "italian";
 
     let prompt = "";
 
-    if (lang === "english") {
-      prompt = `Write a polite professional email template to invite the client to schedule a property viewing. Use placeholders like [Client Name], [Property Name], [Availability Status], [Phone], [Agency Name].`;
+    if (language === "italian") {
+      prompt = `Oggetto: Visita esclusiva alla proprietà [Nome Proprietà]
+
+Gentile [Nome Cliente],
+
+La contatto per invitarla a scoprire di persona la proprietà [Nome Proprietà], che potrebbe rispondere pienamente alle sue esigenze.
+
+Attualmente disponibile in [Stato disponibilità], questa soluzione offre caratteristiche uniche che meritano di essere vissute dal vivo.
+
+Per organizzare una visita, può contattarmi direttamente al [Telefono] o rispondere a questa email indicando le sue preferenze di data e orario.
+
+Resto a disposizione per qualsiasi ulteriore informazione.
+
+Cordiali saluti,
+[Nome Agenzia]`;
     } else {
-      prompt = `Scrivi un'email cortese e professionale per invitare il cliente a fissare una visita all'immobile. Utilizza segnaposto come [Nome Cliente], [Nome Proprietà], [Stato disponibilità], [Telefono], [Nome Agenzia].`;
+      prompt = `Subject: Exclusive Viewing of [Property Name]
+
+Dear [Client Name],
+
+I am reaching out to invite you to personally view the property [Property Name], which could perfectly match your needs.
+
+Currently available in [Availability Status], this property offers unique features that deserve to be experienced in person.
+
+To schedule a visit, you can contact me directly at [Phone Number] or reply to this email indicating your preferred date and time.
+
+I remain at your disposal for any additional information.
+
+Kind regards,
+[Agency Name]`;
     }
-
-    const apiKey = process.env.NEXA_API_KEY;
-
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        messages: [
-          { role: "system", content: "You are a professional real estate copywriter." },
-          { role: "user", content: prompt }
-        ],
-        temperature: 0.5,
-        max_tokens: 500
-      }),
-    });
-
-    const data = await response.json();
-    const aiMessage = data.choices[0].message.content;
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ reply: aiMessage }),
+      body: JSON.stringify({ reply: prompt }),
     };
   } catch (error) {
+    console.error("Errore:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: error.message }),
