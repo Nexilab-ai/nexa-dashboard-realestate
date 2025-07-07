@@ -13,29 +13,27 @@ exports.handler = async (event) => {
 Gentile [Nome Cliente],
 
 La contatto per invitarla a scoprire di persona la proprietà [Nome Proprietà], che potrebbe rispondere pienamente alle sue esigenze.
+Attualmente disponibile in [Stato disponibilità], si tratta di una soluzione che merita di essere valutata con una visita diretta, così da apprezzarne al meglio le caratteristiche e il contesto.
 
-Attualmente disponibile in [Stato disponibilità], questa soluzione offre caratteristiche uniche che meritano di essere vissute dal vivo.
-
-Per organizzare una visita, può contattarmi direttamente al [Telefono] o rispondere a questa email indicando le sue preferenze di data e orario.
+Per organizzare un appuntamento, può contattarmi direttamente al [Telefono] o rispondere a questa email indicando le sue preferenze di data e orario.
 
 Resto a disposizione per qualsiasi ulteriore informazione.
 
 Cordiali saluti,
-[Nome Agenzia]`;
+[Nome Agenzia]
     } else {
       prompt = `Subject: Exclusive Viewing of [Property Name]
 
 Dear [Client Name],
 
-I am reaching out to invite you to personally view the property [Property Name], which could perfectly match your needs.
+I am reaching out to invite you to personally discover the property [Property Name], which could fully meet your requirements.
+Currently available [Availability Status], this solution deserves a direct visit to best appreciate its features and the surrounding context.
 
-Currently available in [Availability Status], this property offers unique features that deserve to be experienced in person.
+To arrange an appointment, please feel free to contact me directly at [Phone Number] or reply to this email indicating your preferred date and time.
 
-To schedule a visit, you can contact me directly at [Phone Number] or reply to this email indicating your preferred date and time.
+I remain at your disposal for any further information.
 
-I remain at your disposal for any additional information.
-
-Kind regards,
+Best regards,
 [Agency Name]`;
     }
 
