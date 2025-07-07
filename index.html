@@ -59,18 +59,7 @@
     <button id="btnSocialTexts" onclick="generate('generateSocialTexts')"></button>
     <button id="btnVideoScript" onclick="generate('generateVideoScript')"></button>
     <button id="btnPDF" onclick="generate('generatePDF')"></button>
-    <button id="btnDocsLink" onclick="generate('generateDocsLink')"></button>
-  </div>
-
-  <br/>
-  <h3>Social Posts</h3>
-  <div>
-    <button id="btnFacebook" onclick="generate('generateFacebookPost')"></button>
-    <button id="btnInstagram" onclick="generate('generateInstagramPost')"></button>
-    <button id="btnLinkedIn" onclick="generate('generateLinkedInPost')"></button>
-    <button id="btnTwitter" onclick="generate('generateTwitterPost')"></button>
-    <button id="btnTikTok" onclick="generate('generateTikTokPost')"></button>
-    <button id="btnYouTube" onclick="generate('generateYouTubeShortsPost')"></button>
+    <button onclick="openDocs()">Apri Google Docs</button>
   </div>
 
   <br/>
@@ -90,16 +79,8 @@
         document.getElementById("btnBrochure").innerText = "Generate Brochure Content";
         document.getElementById("btnSocialPlan").innerText = "Generate Social Plan";
         document.getElementById("btnSocialTexts").innerText = "Generate Social Captions";
-        document.getElementById("btnVideoScript").innerText = "Generate Video Script";
+        document.getElementById("btnVideoScript").innerText = "Generate YouTube Shorts Script";
         document.getElementById("btnPDF").innerText = "Download Editable PDF";
-        document.getElementById("btnDocsLink").innerText = "Open Google Docs Template";
-
-        document.getElementById("btnFacebook").innerText = "Generate Facebook Post";
-        document.getElementById("btnInstagram").innerText = "Generate Instagram Post";
-        document.getElementById("btnLinkedIn").innerText = "Generate LinkedIn Post";
-        document.getElementById("btnTwitter").innerText = "Generate Twitter Post";
-        document.getElementById("btnTikTok").innerText = "Generate TikTok Script";
-        document.getElementById("btnYouTube").innerText = "Generate YouTube Shorts Script";
       } else {
         document.getElementById("btnListing").innerText = "Genera Annuncio Immobiliare";
         document.getElementById("btnShortListing").innerText = "Genera Annuncio Breve";
@@ -107,25 +88,17 @@
         document.getElementById("btnBrochure").innerText = "Genera Contenuto Brochure";
         document.getElementById("btnSocialPlan").innerText = "Genera Piano Social";
         document.getElementById("btnSocialTexts").innerText = "Genera Caption Social";
-        document.getElementById("btnVideoScript").innerText = "Genera Script Video";
+        document.getElementById("btnVideoScript").innerText = "Genera Script YouTube Shorts";
         document.getElementById("btnPDF").innerText = "Scarica PDF Editabile";
-        document.getElementById("btnDocsLink").innerText = "Apri Google Docs";
-
-        document.getElementById("btnFacebook").innerText = "Genera Post Facebook";
-        document.getElementById("btnInstagram").innerText = "Genera Post Instagram";
-        document.getElementById("btnLinkedIn").innerText = "Genera Post LinkedIn";
-        document.getElementById("btnTwitter").innerText = "Genera Post Twitter";
-        document.getElementById("btnTikTok").innerText = "Genera Script TikTok";
-        document.getElementById("btnYouTube").innerText = "Genera Script YouTube Shorts";
       }
     }
 
-    // Initialize labels
     updateButtonLabels();
 
     async function generate(endpoint) {
       const lang = document.getElementById("languageSelect").value;
       const responseDiv = document.getElementById("response");
+
       responseDiv.innerText = "⌛ Generazione in corso...";
 
       try {
@@ -141,10 +114,15 @@
       }
     }
 
+    function openDocs() {
+      window.open("https://docs.google.com/document/d/IL-TUO-DOC-ID/edit", "_blank");
+    }
+
     async function sendCustomRequest() {
       const lang = document.getElementById("languageSelect").value;
       const input = document.getElementById("customInput").value;
       const responseDiv = document.getElementById("response");
+
       responseDiv.innerText = "⌛ Generazione in corso...";
 
       try {
